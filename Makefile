@@ -3,10 +3,10 @@ BACKUPANDRESTORE_DIR=/var/www/html/extensions/BackupAndRestore
 init:
 	./up.sh
 
-shutdown: backupNow
+shutdown:
 	docker-compose down --volumes 
 
-removeAllImages: backupNow
+removeAllImages:
 	docker-compose down --volumes 
 	docker rmi -f $(shell docker images -q)
 

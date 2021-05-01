@@ -19,7 +19,7 @@ services:
     image: xlp0/mediawiki${TAG}
     restart: always
     ports:
-      - ${PORT_NUMBER}:80
+      - ${PortNumber}:80
     links:
       - database
     volumes:
