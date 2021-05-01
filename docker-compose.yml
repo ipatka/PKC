@@ -30,6 +30,7 @@ services:
       - ./LocalSettings.php:/var/www/html/LocalSettings.php
       - ./backup:/var/www/html/backup
       - ./backup/ToBeUploaded:/var/www/html/backup/ToBeUploaded
+      - ./localExtensions/Verified_Page_History:/var/www/html/extensions/Verified_Page_History
 
 
     depends_on:

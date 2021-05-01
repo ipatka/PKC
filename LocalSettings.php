@@ -203,6 +203,8 @@ wfLoadExtension( 'intersection' );
 wfLoadExtension( 'PdfHandler' );
 wfLoadExtension( 'PDFEmbed' );
 
+# Custom extensons
+wfLoadExtension( 'Verified_Page_History' );
 
 
 // Default width for the PDF object container.

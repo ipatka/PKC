@@ -51,6 +51,10 @@ if [ ! -e ./LocalSettings.php ]; then
   curl https://raw.githubusercontent.com/xlp0/XLPWikiMountPoint/main/LocalSettings.php > LocalSettings.php
 fi
 
+# Download custom extensions
+touch text.tmp
+
+
 # If docker is running already, first run a data dump before shutting down docker processes
 # One can use the following instruction to find the current directory name withou the full path
 # CURRENTDIR=${PWD##*/}
@@ -87,6 +91,9 @@ fi
 
 # Start the docker processes
 docker-compose up -d --build
+
+# Load custom extensions
+docker exec $MW_CONTAINER bash -c "cd extensions && git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/examples.git"
 
 
 # After docker processes are ready, reload the data from earlier dump
