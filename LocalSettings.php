@@ -36,8 +36,7 @@ $wgResourceBasePath = $wgScriptPath;
 
 ## The URL paths to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
-$wgLogos = [ '1x' => "$wgResourceBasePath/resources/assets/xlp.png" ];
-#$wgLogos = [ '1x' => "$wgResourceBasePath/resources/assets/EuMuse.png" ];
+$wgLogos = [ '1x' => "$wgResourceBasePath/resources/assets/xlp.png" ];;
 
 ## UPO means: this is also a user preference option
 
@@ -67,6 +66,12 @@ $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 # Shared database table
 # This has no effect unless $wgSharedDB is also set.
 $wgSharedTables[] = "actor";
+
+# Requires that a user be registered before they can edit.
+$wgGroupPermissions['*']['edit'] = false;
+
+# Prevent new user registrations except by sysops
+$wgGroupPermissions['*']['createaccount'] = false;
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_ACCEL;
@@ -270,6 +275,13 @@ wfLoadExtension( 'Maps' );
 $wgShowExceptionDetails = true;
 
 wfLoadExtension( 'MW-OAuth2Client' );
+wfLoadExtension( 'Widgets' );
+
+wfLoadExtension( 'GoogleDocs4MW' );
+wfLoadExtension( 'TemplateWizard' );
+
+
+
 
 # The following statements are for OATHAuth
 wfLoadExtension( 'OATHAuth' );
@@ -304,3 +316,38 @@ $wgOAuth2RefreshTokenTTL="PT1M";
 
 # The following statement is only used for Semantic MediaWiki 
 enableSemantics();
+
+
+wfLoadExtension( 'MW-OAuth2Client' );
+
+# The following two lines contains information on Github's OAuth service. You will have to apply for your own information to get things to work.
+$wgOAuth2Client['client']['id'] = "83698ede718fea93a79e";
+$wgOAuth2Client['client']['secret'] = "290648a66406e1bb3c5655a96c34b62fac5e4e9a";
+
+$wgOAuth2Client['configuration']['authorize_endpoint']     = 'https://github.com/login/oauth/authorize'; // Authorization URL
+$wgOAuth2Client['configuration']['access_token_endpoint']  = 'https://github.com/login/oauth/access_token'; // Token URL
+$wgOAuth2Client['configuration']['api_endpoint']           = 'https://api.github.com/user'; // URL to fetch user JSON
+$wgOAuth2Client['configuration']['redirect_uri'] = "http://localhost:9352/index.php/Special:OAuth2Client/callback";
+$wgOAuth2Client['configuration']['username'] = 'login'; // JSON path to username
+$wgOAuth2Client['configuration']['email'] = 'email'; // JSON path to email
+$wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; //Permissions
+$wgOAuth2Client['configuration']['service_name'] = 'Oauth Registry'; // the name of your service
+$wgOAuth2Client['configuration']['service_login_link_text'] = 'Login through Github'; // the text of the login link
+
+// remove login and logout buttons for all users
+function StripLogin(&$personal_urls, &$wgTitle) {  
+    unset( $personal_urls["login"] );
+    # unset( $personal_urls["logout"] );
+    unset( $personal_urls['anonlogin'] );
+    return true;
+}
+
+$wgHooks['PersonalUrls'][] = 'StripLogin';
+
+## For attaching licensing metadata to pages, and displaying an
+## appropriate copyright notice / icon. GNU Free Documentation
+## License and Creative Commons licenses are supported so far.
+$wgRightsPage = "License"; # Set to the title of a wiki page that describes your license/copyright
+$wgRightsIcon = "$wgResourceBasePath/resources/assets/by-sa.png";
+$wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/3.0/';
+$wgRightsText = "a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License";
